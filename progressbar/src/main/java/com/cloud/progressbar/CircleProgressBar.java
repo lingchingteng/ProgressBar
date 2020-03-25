@@ -26,6 +26,7 @@ public class CircleProgressBar extends AppCompatTextView {
     private RectF mProgressArea;
 
     private boolean mIsFan = false;     //weather to draw fan shape
+    private boolean mShowMinProgress = true;
 
     public CircleProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -98,8 +99,10 @@ public class CircleProgressBar extends AppCompatTextView {
     protected void onDraw(Canvas canvas) {
         initializeProgressArea();
 
-        //Draw progress background
-        canvas.drawArc(mBackArea, 0, 360, mIsFan, mProgressBackPaint);
+        if (mShowMinProgress || mProgress != mMinProgress) {
+            //Draw progress background
+            canvas.drawArc(mBackArea, 0, 360, mIsFan, mProgressBackPaint);
+        }
 
         if (mProgress > mMinProgress && mProgress <= mMaxProgress) {
             //Calculate the angle of progress
@@ -116,6 +119,14 @@ public class CircleProgressBar extends AppCompatTextView {
      */
     public void setProgress(int progress) {
         mProgress = progress;
+        invalidate();
+    }
+
+    /**
+     * Set if want to show circle progress when progress is MinProgress.
+     */
+    public void setShowMinProgress(boolean show) {
+        mShowMinProgress = show;
         invalidate();
     }
 }
